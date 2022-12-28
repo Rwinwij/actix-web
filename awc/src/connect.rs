@@ -12,7 +12,8 @@ use actix_http::{
     RequestHead, RequestHeadType, ResponseHead,
 };
 use actix_service::Service;
-use futures_core::future::{BoxFuture, FutureExt};
+//use futures_core::future::{BoxFuture, FutureExt};
+use futures::future::{BoxFuture, FutureExt};
 
 use crate::response::ClientResponse;
 
