@@ -94,7 +94,7 @@
 #![doc(html_favicon_url = "https://actix.rs/favicon.ico")]
 
 use std::convert::TryFrom;
-use std::rc::Rc;
+use std::sync::Arc;
 use std::time::Duration;
 
 pub use actix_http::{client::Connector, cookie, http};
@@ -141,7 +141,7 @@ use self::connect::{Connect, ConnectorWrapper};
 /// }
 /// ```
 #[derive(Clone)]
-pub struct Client(Rc<ClientConfig>);
+pub struct Client(Arc<ClientConfig>);
 
 pub(crate) struct ClientConfig {
     pub(crate) connector: Box<dyn Connect>,
@@ -151,7 +151,7 @@ pub(crate) struct ClientConfig {
 
 impl Default for Client {
     fn default() -> Self {
-        Client(Rc::new(ClientConfig {
+        Client(Arc::new(ClientConfig {
             connector: Box::new(ConnectorWrapper(Connector::new().finish())),
             headers: HeaderMap::new(),
             timeout: Some(Duration::from_secs(5)),
