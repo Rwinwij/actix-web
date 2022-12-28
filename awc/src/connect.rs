@@ -12,7 +12,7 @@ use actix_http::{
     RequestHead, RequestHeadType, ResponseHead,
 };
 use actix_service::Service;
-use futures_core::future::LocalBoxFuture;
+use futures_core::future::BoxFuture;
 
 use crate::response::ClientResponse;
 
@@ -26,14 +26,14 @@ pub(crate) trait Connect {
         head: RequestHeadType,
         body: Body,
         addr: Option<net::SocketAddr>,
-    ) -> LocalBoxFuture< Send + 'static, Result<ClientResponse, SendRequestError>>;
+    ) -> BoxFuture<'static, Result<ClientResponse, SendRequestError>>;
 
     /// Send request, returns Response and Framed
     fn open_tunnel(
         &self,
         head: RequestHead,
         addr: Option<net::SocketAddr>,
-    ) -> LocalBoxFuture< Send + 'static, Result<TunnelResponse, SendRequestError>>;
+    ) -> BoxFuture<'static, Result<TunnelResponse, SendRequestError>>;
 }
 
 impl<T> Connect for ConnectorWrapper<T>
@@ -50,7 +50,7 @@ where
         head: RequestHeadType,
         body: Body,
         addr: Option<net::SocketAddr>,
-    ) -> LocalBoxFuture<'static, Result<ClientResponse, SendRequestError>> {
+    ) -> BoxFuture<'static, Result<ClientResponse, SendRequestError>> {
         // connect to the host
         let fut = self.0.call(ClientConnect {
             uri: head.as_ref().uri.clone(),
@@ -71,7 +71,7 @@ where
         &self,
         head: RequestHead,
         addr: Option<net::SocketAddr>,
-    ) -> LocalBoxFuture<'static, Result<TunnelResponse, SendRequestError>> {
+    ) -> BoxFuture<'static, Result<TunnelResponse, SendRequestError>> {
         // connect to the host
         let fut = self.0.call(ClientConnect {
             uri: head.uri.clone(),
