@@ -1,6 +1,7 @@
 use std::convert::TryFrom;
 use std::net;
 use std::rc::Rc;
+use std::sync::Arc;
 use std::time::Duration;
 
 use bytes::Bytes;
@@ -23,7 +24,7 @@ pub struct FrozenClientRequest {
     pub(crate) addr: Option<net::SocketAddr>,
     pub(crate) response_decompress: bool,
     pub(crate) timeout: Option<Duration>,
-    pub(crate) config: Rc<ClientConfig>,
+    pub(crate) config: Arc<ClientConfig>,
 }
 
 impl FrozenClientRequest {

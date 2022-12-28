@@ -1,5 +1,6 @@
 use std::convert::TryFrom;
 use std::sync::Arc;
+use std::rc::Rc;
 use std::time::Duration;
 use std::{fmt, net};
 
@@ -375,7 +376,7 @@ impl ClientRequest {
         };
 
         let request = FrozenClientRequest {
-            head: Arc::new(slf.head),
+            head: Rc::new(slf.head),
             addr: slf.addr,
             response_decompress: slf.response_decompress,
             timeout: slf.timeout,
