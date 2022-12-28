@@ -1,5 +1,5 @@
 use std::convert::TryFrom;
-use std::rc::Rc;
+use std::sync::Arc;
 use std::time::Duration;
 use std::{fmt, net};
 
@@ -58,12 +58,12 @@ pub struct ClientRequest {
     cookies: Option<CookieJar>,
     response_decompress: bool,
     timeout: Option<Duration>,
-    config: Rc<ClientConfig>,
+    config: Arc<ClientConfig>,
 }
 
 impl ClientRequest {
     /// Create new client request builder.
-    pub(crate) fn new<U>(method: Method, uri: U, config: Rc<ClientConfig>) -> Self
+    pub(crate) fn new<U>(method: Method, uri: U, config: Arc<ClientConfig>) -> Self
     where
         Uri: TryFrom<U>,
         <Uri as TryFrom<U>>::Error: Into<HttpError>,
@@ -375,7 +375,7 @@ impl ClientRequest {
         };
 
         let request = FrozenClientRequest {
-            head: Rc::new(slf.head),
+            head: Arc::new(slf.head),
             addr: slf.addr,
             response_decompress: slf.response_decompress,
             timeout: slf.timeout,

@@ -28,7 +28,7 @@
 
 use std::convert::TryFrom;
 use std::net::SocketAddr;
-use std::rc::Rc;
+use std::sync::Arc;
 use std::{fmt, str};
 
 use actix_codec::Framed;
@@ -59,12 +59,12 @@ pub struct WebsocketsRequest {
     max_size: usize,
     server_mode: bool,
     cookies: Option<CookieJar>,
-    config: Rc<ClientConfig>,
+    config: Arc<ClientConfig>,
 }
 
 impl WebsocketsRequest {
     /// Create new websocket connection
-    pub(crate) fn new<U>(uri: U, config: Rc<ClientConfig>) -> Self
+    pub(crate) fn new<U>(uri: U, config: Arc<ClientConfig>) -> Self
     where
         Uri: TryFrom<U>,
         <Uri as TryFrom<U>>::Error: Into<HttpError>,

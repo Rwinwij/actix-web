@@ -1,6 +1,6 @@
 use std::convert::TryFrom;
 use std::fmt;
-use std::rc::Rc;
+use std::sync::Arc;
 use std::time::Duration;
 
 use actix_http::client::{Connect as HttpConnect, ConnectError, Connection, Connector};
@@ -188,7 +188,7 @@ impl ClientBuilder {
             timeout: self.timeout,
             connector,
         };
-        Client(Rc::new(config))
+        Client(Arc::new(config))
     }
 }
 
