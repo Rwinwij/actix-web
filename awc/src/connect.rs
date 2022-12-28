@@ -39,11 +39,11 @@ pub(crate) trait Connect {
 
 impl<T> Connect for ConnectorWrapper<T>
 where
-    T: Service<ClientConnect, Error = ConnectError> + Send,
-    T::Response: Connection + Send,
-    <T::Response as Connection>::Io: Send + 'static,
-    <T::Response as Connection>::Future: Send + 'static,
-    <T::Response as Connection>::TunnelFuture: Send + 'static,
+    T: Service<ClientConnect, Error = ConnectError>,
+    T::Response: Connection,
+    <T::Response as Connection>::Io: 'static,
+    <T::Response as Connection>::Future: 'static,
+    <T::Response as Connection>::TunnelFuture: 'static,
     T::Future: 'static,
 {
     fn send_request(
