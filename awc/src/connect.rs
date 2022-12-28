@@ -26,14 +26,14 @@ pub(crate) trait Connect {
         head: RequestHeadType,
         body: Body,
         addr: Option<net::SocketAddr>,
-    ) -> LocalBoxFuture<'static, Result<ClientResponse, SendRequestError>>;
+    ) -> LocalBoxFuture< Send + 'static, Result<ClientResponse, SendRequestError>>;
 
     /// Send request, returns Response and Framed
     fn open_tunnel(
         &self,
         head: RequestHead,
         addr: Option<net::SocketAddr>,
-    ) -> LocalBoxFuture<'static, Result<TunnelResponse, SendRequestError>>;
+    ) -> LocalBoxFuture< Send + 'static, Result<TunnelResponse, SendRequestError>>;
 }
 
 impl<T> Connect for ConnectorWrapper<T>
