@@ -57,14 +57,17 @@ where
             addr,
         });
 
-        Box::pin(async move {
+        //Box::pin(async move {
+        async move {
             let connection = fut.await?;
 
             // send request
             let (head, payload) = connection.send_request(head, body).await?;
 
             Ok(ClientResponse::new(head, payload))
-        })
+        }
+        .boxed()
+        //})
     }
 
     fn open_tunnel(
@@ -78,7 +81,8 @@ where
             addr,
         });
 
-        Box::pin(async move {
+        //Box::pin(async move {
+        async move {
             let connection = fut.await?;
 
             // send request
@@ -87,7 +91,9 @@ where
 
             let framed = framed.into_map_io(|io| BoxedSocket(Box::new(Socket(io))));
             Ok((head, framed))
-        })
+        }
+        .boxed()
+        //})
     }
 }
 
